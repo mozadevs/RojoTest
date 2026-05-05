@@ -2,14 +2,14 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ServerScriptService = game:GetService("ServerScriptService")
 
-local Loader = require(ReplicatedStorage.Modules.Utilities.Loader)
+local Loader = require(ReplicatedStorage.Shared.Modules.Utilities.Loader)
 
 Loader.loadComponents({
-	ServerScriptService.Components,
-	ReplicatedStorage.Modules.Components,
+	ServerScriptService.Server.Components,
+	ReplicatedStorage.Shared.Modules.Components,
 })
 
-local Services = Loader.load({ ServerScriptService.Services })
+local Services = Loader.load({ ServerScriptService.Server.Services })
 Loader.start(Services)
 
 print("[Server] Bootstrap complete")
