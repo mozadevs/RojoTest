@@ -5,6 +5,8 @@ local TweenService = game:GetService("TweenService")
 local Component = require(ReplicatedStorage.Shared.Modules.Utilities.Component)
 
 local MATERIALS = Enum.Material:GetEnumItems()
+local BagClickedRemote = ReplicatedStorage.BagClicked
+local nextBagId = 0
 
 local ConveyorBelt = Component.new({ tag = "ConveyorBelt" })
 
@@ -21,6 +23,18 @@ function ConveyorBelt:construct()
 			paint.Material = MATERIALS[math.random(#MATERIALS)]
 			paint.Color = Color3.new(math.random(), math.random(), math.random())
 			paint.Anchored = true
+
+			nextBagId += 1
+			local id = nextBagId
+			bag:SetAttribute("BagId", id)
+			local prompt = Instance.new("ProximityPrompt")
+			prompt.ActionText = "Click"
+			prompt.RequiresLineOfSight = false
+			prompt.Parent = bag.Plastic
+			prompt.Triggered:Connect(function(player)
+				print("[Server] Bag clicked: " .. id)
+				BagClickedRemote:FireClient(player, id)
+			end)
 			local _, bagSize = bag:GetBoundingBox()
 			bag:PivotTo(main.CFrame * CFrame.new(0, main.Size.Y / 2 + bagSize.Y / 2, main.Size.Z / 2 - 2))
 			bag:ScaleTo(0.01)
