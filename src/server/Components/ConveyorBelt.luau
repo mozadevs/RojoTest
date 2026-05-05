@@ -6,6 +6,7 @@ local Component = require(ReplicatedStorage.Shared.Modules.Utilities.Component)
 
 local MATERIALS = Enum.Material:GetEnumItems()
 local BagClickedRemote = ReplicatedStorage.BagClicked
+local SliderChangedRemote = ReplicatedStorage.SliderChanged
 local nextBagId = 0
 
 local ConveyorBelt = Component.new({ tag = "ConveyorBelt" })
@@ -14,9 +15,16 @@ function ConveyorBelt:construct()
 	local main = self.instance.Main :: BasePart
 	main.AssemblyLinearVelocity = main.CFrame.LookVector * (self.instance:GetAttribute("Speed") or 20)
 
+	self.trove:Connect(SliderChangedRemote.OnServerEvent, function(_, value)
+		self.instance:SetAttribute("Interval", value)
+	end)
+
 	self.trove:Add(task.spawn(function()
+		local lastSpawn = os.clock()
 		while true do
-			task.wait(self.instance:GetAttribute("Interval") or 1)
+			task.wait()
+			if os.clock() - lastSpawn < (self.instance:GetAttribute("Interval") or 1) then continue end
+			lastSpawn = os.clock()
 			local bag = ReplicatedStorage.Bag:Clone()
 			local paint = bag.Paint :: MeshPart
 			bag.PrimaryPart = paint
