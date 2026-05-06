@@ -10,3 +10,6 @@ MatchService (Service): tracks claimed slots per pad, when every slot in every t
 # Explination To why I chose to do it this way
 
 I chose to do it with components because it already gives a per instance lifecycle (Construct / Stop ), and also a Conveyor Belt is a world object / per-instance behavior on a tagged model. Thats exactly what Tag Driven Components are for, if i use components that means i dont have to do any manual clean up code, no manual loop scanning the workspace, and i get automatic handling of the conveyor belt during runtime.
+
+# GAME LINK: 
+https://www.roblox.com/games/134914165841630/TestRojo
