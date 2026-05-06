@@ -31,6 +31,11 @@ function ConveyorBelt:construct()
 			paint.Material = MATERIALS[math.random(#MATERIALS)]
 			paint.Color = Color3.new(math.random(), math.random(), math.random())
 			paint.Anchored = true
+			for _, part in bag:GetDescendants() do
+				if part:IsA("BasePart") then
+					part.CollisionGroup = "Bags"
+				end
+			end
 
 			nextBagId += 1
 			local id = nextBagId
